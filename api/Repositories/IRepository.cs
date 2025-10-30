@@ -5,8 +5,13 @@ using System.Threading.Tasks;
 
 namespace api.Repositories
 {
-    public class NewClassIRepository
+    public interface IRepository<T> where T : class
     {
-        
+        IQueryable<T> Query();
+        Task<T?> GetAsync(int id);
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task RemoveAsync(T entity);
+        Task SaveChangesAsync();
     }
 }
