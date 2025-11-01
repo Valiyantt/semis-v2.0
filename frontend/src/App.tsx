@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/superadmin/SuperAdminDashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Students from "./pages/Students";
