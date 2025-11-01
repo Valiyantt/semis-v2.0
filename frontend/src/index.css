@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -27,6 +25,8 @@ a:hover {
 }
 
 body {
+  font-family: 'Corbel', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
   margin: 0;
   display: flex;
   place-items: center;
@@ -69,4 +69,10 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face {
+  font-family: 'Corbel';
+  src: local('Corbel'), local('Corbel Regular'),
+       url('https://fonts.cdnfonts.com/s/14105/Corbel.woff') format('woff');
 }
