@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/superadmin/SuperAdminDashboard";
+import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
+import SuperAdminStudents from "./pages/superadmin/SuperAdminStudents";
+import SuperAdminFaculty from "./pages/superadmin/SuperAdminFaculty";
+import SuperAdminReports from "./pages/superadmin/SuperAdminReports";
+import SuperAdminSettings from "./pages/superadmin/SuperAdminSettings";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import Students from "./pages/Students";
-import Faculty from "./pages/Faculty";
-import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
 
 // Protect private routes
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -15,112 +15,59 @@ const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) =>
   return isAuthenticated ? element : <Navigate to="/" />;
 };
 
-function App() {
+// Common layout wrapper for SuperAdmin pages
+const SuperAdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  return (
+    <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="superadmin" />
+
+      {/* Main layout */}
+      <div className="flex-1 flex flex-col">
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <main className="mt-16 md:ml-64 p-8 transition-all duration-300">{children}</main>
+      </div>
+    </div>
+  );
+};
+
+function App() {
   return (
     <Routes>
       {/* Public route */}
       <Route path="/" element={<Login />} />
 
-      {/* Protected routes */}
+      {/* Super Admin Protected Routes */}
       <Route
-        path="/dashboard"
+        path="/superadmin/dashboard"
         element={
-          <PrivateRoute
-            element={
-              <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
-                {/* Sidebar */}
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-                {/* Main layout area */}
-                <div className="flex-1 flex flex-col">
-                  <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-
-                  {/* Main content area */}
-                  <main className="mt-16 md:ml-64 p-8 transition-all duration-300">
-                    <Dashboard />
-                  </main>
-                </div>
-              </div>
-            }
-          />
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminDashboard /></SuperAdminLayout>} />
         }
       />
-
       <Route
-        path="/students"
+        path="/superadmin/students"
         element={
-          <PrivateRoute
-            element={
-              <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <div className="flex-1 flex flex-col">
-                  <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                  <main className="mt-16 md:ml-64 p-8 transition-all duration-300">
-                    <Students />
-                  </main>
-                </div>
-              </div>
-            }
-          />
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminStudents /></SuperAdminLayout>} />
         }
       />
-
       <Route
-        path="/faculty"
+        path="/superadmin/faculty"
         element={
-          <PrivateRoute
-            element={
-              <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <div className="flex-1 flex flex-col">
-                  <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                  <main className="mt-16 md:ml-64 p-8 transition-all duration-300">
-                    <Faculty />
-                  </main>
-                </div>
-              </div>
-            }
-          />
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminFaculty /></SuperAdminLayout>} />
         }
       />
-
       <Route
-        path="/reports"
+        path="/superadmin/reports"
         element={
-          <PrivateRoute
-            element={
-              <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <div className="flex-1 flex flex-col">
-                  <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                  <main className="mt-16 md:ml-64 p-8 transition-all duration-300">
-                    <Reports />
-                  </main>
-                </div>
-              </div>
-            }
-          />
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminReports /></SuperAdminLayout>} />
         }
       />
-
       <Route
-        path="/settings"
+        path="/superadmin/settings"
         element={
-          <PrivateRoute
-            element={
-              <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
-                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-                <div className="flex-1 flex flex-col">
-                  <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                  <main className="mt-16 md:ml-64 p-8 transition-all duration-300">
-                    <Settings />
-                  </main>
-                </div>
-              </div>
-            }
-          />
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminSettings /></SuperAdminLayout>} />
         }
       />
     </Routes>
