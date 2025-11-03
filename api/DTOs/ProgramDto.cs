@@ -1,5 +1,3 @@
-using System;
-
 namespace api.DTOs
 {
     public class ProgramDto
