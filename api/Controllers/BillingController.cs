@@ -9,7 +9,7 @@ using api.Data;
 using api.DTOs;
 using api.Models;
 
-namespace api.Controllersa
+namespace api.Controllers
 {
 [ApiController]
     [Route("api/[controller]")]

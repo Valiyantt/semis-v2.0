@@ -29,9 +29,10 @@ namespace api.Data
 
             // Relationships for new models
             mb.Entity<AppUser>()
-                .HasOne<Role>()
-                .WithMany()
-                .HasForeignKey(u => u.RoleId);
+                .HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             mb.Entity<Department>()
                 .Property(d => d.Name)
