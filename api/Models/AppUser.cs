@@ -1,17 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models
 {
     public class AppUser
     {
         public int Id { get; set; }
-        [Required] public string Username { get; set; } = "";
+
+        [Required]
+        public string Username { get; set; } = "";
+
         public string FullName { get; set; } = "";
-        [Required] public string PasswordHash { get; set; } = "";
-        public string Role { get; set; } = "User";
+
+        [Required]
+        public string PasswordHash { get; set; } = "";
+
+        // Foreign Key to Role
+        [ForeignKey("Role")]
+        public int RoleId { get; set; }
+
+        // Navigation property
+        public Role? Role { get; set; }
     }
 }
