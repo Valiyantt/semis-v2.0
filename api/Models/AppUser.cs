@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -5,6 +6,7 @@ namespace api.Models
 {
     public class AppUser
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -15,11 +17,18 @@ namespace api.Models
         [Required]
         public string PasswordHash { get; set; } = "";
 
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
         // Foreign Key to Role
-        [ForeignKey("Role")]
+        [ForeignKey("AppRole")]
         public int RoleId { get; set; }
 
         // Navigation property
-        public Role? Role { get; set; }
+        public AppRole? Role { get; set; }
     }
 }

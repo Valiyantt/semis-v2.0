@@ -7,14 +7,13 @@ namespace api.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> opts) : base(opts) { }
 
+        public DbSet<AppUser> Users { get; set; }
+        public DbSet<AppRole> Roles { get; set; }
+        public DbSet<SuperAdmin> SuperAdmins { get; set; }
         public DbSet<ProgramEntry> Programs { get; set; }
         public DbSet<WelcomePage> WelcomePages { get; set; }
         public DbSet<AboutUs> AboutUsEntries { get; set; }
         public DbSet<BillingStatement> BillingStatements { get; set; }
-        public DbSet<AppUser> Users { get; set; }
-
-        // ✅ Add Super Admin Tables
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
@@ -23,23 +22,29 @@ namespace api.Data
         {
             base.OnModelCreating(mb);
 
-            // Existing configs
-            mb.Entity<AppUser>().HasIndex(u => u.Username).IsUnique();
-            mb.Entity<ProgramEntry>().Property(p => p.Title).HasMaxLength(200);
+            // Unique username
+            mb.Entity<AppUser>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
 
-            // Relationships for new models
+            // Role relationship
             mb.Entity<AppUser>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Validation rules
+            mb.Entity<ProgramEntry>()
+                .Property(p => p.Title)
+                .HasMaxLength(200);
+
             mb.Entity<Department>()
                 .Property(d => d.Name)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            mb.Entity<Role>()
+            mb.Entity<AppRole>()
                 .Property(r => r.RoleName)
                 .HasMaxLength(50)
                 .IsRequired();

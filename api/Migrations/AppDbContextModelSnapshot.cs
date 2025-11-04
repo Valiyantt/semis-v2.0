@@ -57,15 +57,44 @@ namespace api.Migrations
                     b.ToTable("Announcements");
                 });
 
+            modelBuilder.Entity("api.Models.AppRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -181,23 +210,32 @@ namespace api.Migrations
                     b.ToTable("Programs");
                 });
 
-            modelBuilder.Entity("api.Models.Role", b =>
+            modelBuilder.Entity("api.Models.SuperAdmin", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("SuperAdminId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RoleName")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("RoleId");
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("Roles");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SuperAdminId");
+
+                    b.ToTable("SuperAdmins");
                 });
 
             modelBuilder.Entity("api.Models.WelcomePage", b =>
@@ -220,7 +258,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
-                    b.HasOne("api.Models.Role", "Role")
+                    b.HasOne("api.Models.AppRole", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -229,7 +267,7 @@ namespace api.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("api.Models.Role", b =>
+            modelBuilder.Entity("api.Models.AppRole", b =>
                 {
                     b.Navigation("Users");
                 });
