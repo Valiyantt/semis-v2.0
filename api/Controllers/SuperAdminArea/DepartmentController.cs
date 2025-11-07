@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Models;
 
-namespace api.Controllers.SuperAdmin
+namespace api.Controllers.SuperAdminArea
 {
     [Route("api/superadmin/[controller]")]
     [ApiController]
@@ -34,13 +34,13 @@ namespace api.Controllers.SuperAdmin
         {
             _context.Departments.Add(dept);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetDepartment), new { id = dept.Id }, dept);
+            return CreatedAtAction(nameof(GetDepartment), new { id = dept.DepartmentId }, dept);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDepartment(int id, Department dept)
         {
-            if (id != dept.Id) return BadRequest("Mismatched Department ID.");
+            if (id != dept.DepartmentId) return BadRequest("Mismatched Department ID.");
             _context.Entry(dept).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return NoContent();
@@ -52,12 +52,6 @@ namespace api.Controllers.SuperAdmin
             var dept = await _context.Departments.FindAsync(id);
             if (dept == null) return NotFound();
             _context.Departments.Remove(dept);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-    }
-}
-            _context.SuperAdmins.Remove(admin);
             await _context.SaveChangesAsync();
             return NoContent();
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Models;
 
-namespace api.Controllers.SuperAdmin
+namespace api.Controllers.SuperAdminArea
 {
     [Route("api/superadmin/[controller]")]
     [ApiController]

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Models;
 
-namespace api.Controllers.SuperAdmin
+namespace api.Controllers.SuperAdminArea
 {
     [Route("api/superadmin/[controller]")]
     [ApiController]
@@ -17,14 +17,14 @@ namespace api.Controllers.SuperAdmin
 
         // GET: api/superadmin/roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        public async Task<ActionResult<IEnumerable<AppRole>>> GetRoles()
         {
             return await _context.Roles.ToListAsync();
         }
 
         // GET: api/superadmin/roles/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Role>> GetRole(int id)
+        public async Task<ActionResult<AppRole>> GetRole(int id)
         {
             var role = await _context.Roles.FindAsync(id);
             if (role == null) return NotFound("Role not found.");
@@ -33,7 +33,7 @@ namespace api.Controllers.SuperAdmin
 
         // POST: api/superadmin/roles
         [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(Role role)
+        public async Task<ActionResult<AppRole>> PostRole(AppRole role)
         {
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
@@ -42,7 +42,7 @@ namespace api.Controllers.SuperAdmin
 
         // PUT: api/superadmin/roles/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(int id, Role role)
+        public async Task<IActionResult> PutRole(int id, AppRole role)
         {
             if (id != role.RoleId) return BadRequest("Mismatched Role ID.");
             _context.Entry(role).State = EntityState.Modified;
