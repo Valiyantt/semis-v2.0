@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.Models;
+using backend.Data;
+using backend.Models;
 
-namespace api.Controllers.SuperAdminArea
+namespace backend.Controllers.SuperAdminArea
 {
     [Route("api/superadmin/[controller]")]
     [ApiController]

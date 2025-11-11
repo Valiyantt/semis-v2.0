@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using api.Data;
-using api.DTOs;
-using api.Models;
+using backend.Data;
+using backend.DTOs;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
 [ApiController]
     [Route("api/[controller]")]
