@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using api.Models;
+using backend.Models;
 
-namespace api.Data
+namespace backend.Data
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> opts) : base(opts) { }
-
+        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Administration> Administrations { get; set; }
         public DbSet<AppUser> Users { get; set; }
         public DbSet<AppRole> Roles { get; set; }
         public DbSet<SuperAdmin> SuperAdmins { get; set; }

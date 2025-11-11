@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Repositories
+namespace backend.Repositories
 {
 public class Repository<T> : IRepository<T> where T : class
     {

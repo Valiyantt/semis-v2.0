@@ -1,4 +1,4 @@
-namespace api.DTOs
+namespace backend.DTOs
 {
     public class BillingDto
     {

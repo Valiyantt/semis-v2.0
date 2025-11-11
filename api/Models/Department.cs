@@ -1,4 +1,4 @@
-namespace api.Models
+namespace backend.Models
 {
     public class Department
     {
