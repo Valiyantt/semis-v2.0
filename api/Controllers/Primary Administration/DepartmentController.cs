@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Models;
@@ -7,6 +8,7 @@ namespace api.Controllers.SuperAdminArea
 {
     [Route("api/superadmin/[controller]")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin")]
     public class DepartmentsController : ControllerBase
     {
         private readonly AppDbContext _context;

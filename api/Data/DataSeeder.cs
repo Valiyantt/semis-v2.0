@@ -92,16 +92,42 @@ namespace api.Data
                 }
             }
 
-            // Add a default admin user if none exist
-            if (!ctx.Users.Any())
+            // Seed default roles and a superadmin user if none exist
+            if (!ctx.Roles.Any())
             {
-                var admin = new AppUser
+                var superRole = new AppRole { RoleName = "SuperAdmin", Description = "Full system owner" };
+                var adminRole = new AppRole { RoleName = "Admin", Description = "Administrative user" };
+                ctx.Roles.AddRange(superRole, adminRole);
+                await ctx.SaveChangesAsync();
+
+                // Add a default superadmin user and assign SuperAdmin role
+                if (!ctx.Users.Any())
                 {
-                    Username = "admin",
-                    FullName = "Administrator",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123") // use BCrypt package; optional
-                };
-                ctx.Users.Add(admin);
+                    var admin = new AppUser
+                    {
+                        Username = "admin",
+                        FullName = "Super Administrator",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // change in production
+                        RoleId = superRole.RoleId
+                    };
+                    ctx.Users.Add(admin);
+                }
+            }
+            else
+            {
+                // Roles exist; ensure at least one admin user exists
+                if (!ctx.Users.Any())
+                {
+                    var super = ctx.Roles.FirstOrDefault(r => r.RoleName == "SuperAdmin") ?? ctx.Roles.FirstOrDefault();
+                    var admin = new AppUser
+                    {
+                        Username = "admin",
+                        FullName = "Administrator",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                        RoleId = super?.RoleId ?? 0
+                    };
+                    ctx.Users.Add(admin);
+                }
             }
 
             await ctx.SaveChangesAsync();

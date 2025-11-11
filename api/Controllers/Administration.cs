@@ -21,14 +21,14 @@ namespace api.Controllers.Administration
         [HttpGet]
         public async Task<IActionResult> GetFaculties()
         {
-            var faculties = await _context.Faculties.ToListAsync();
+            var faculties = await _context.Set<Faculty>().ToListAsync();
             return Ok(faculties);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFaculty(int id)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
+            var faculty = await _context.Set<Faculty>().FindAsync(id);
             if (faculty == null) return NotFound();
             return Ok(faculty);
         }
@@ -37,7 +37,7 @@ namespace api.Controllers.Administration
         public async Task<IActionResult> CreateFaculty([FromBody] Faculty faculty)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            _context.Faculties.Add(faculty);
+            _context.Set<Faculty>().Add(faculty);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetFaculty), new { id = faculty.FacultyId }, faculty);
         }
@@ -45,7 +45,7 @@ namespace api.Controllers.Administration
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateFaculty(int id, [FromBody] Faculty updated)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
+            var faculty = await _context.Set<Faculty>().FindAsync(id);
             if (faculty == null) return NotFound();
 
             faculty.FullName = updated.FullName;
@@ -59,10 +59,10 @@ namespace api.Controllers.Administration
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFaculty(int id)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
+            var faculty = await _context.Set<Faculty>().FindAsync(id);
             if (faculty == null) return NotFound();
 
-            _context.Faculties.Remove(faculty);
+            _context.Set<Faculty>().Remove(faculty);
             await _context.SaveChangesAsync();
             return NoContent();
         }

@@ -3,6 +3,11 @@ using api.Data;
 using api.DTOs;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
 
 namespace api.Controllers
 {
@@ -11,7 +16,8 @@ namespace api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _ctx;
-        public AuthController(AppDbContext ctx) { _ctx = ctx; }
+        private readonly IConfiguration _config;
+        public AuthController(AppDbContext ctx, IConfiguration config) { _ctx = ctx; _config = config; }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
@@ -34,15 +40,43 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var user = await _ctx.Users.SingleOrDefaultAsync(u => u.Username == dto.Username);
+            var user = await _ctx.Users.Include(u => u.Role).SingleOrDefaultAsync(u => u.Username == dto.Username);
             if (user == null) return Unauthorized(new { message = "Invalid credentials" });
 
             var valid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
             if (!valid) return Unauthorized(new { message = "Invalid credentials" });
 
-            // NOTE: This returns basic info. Replace with JWT or Identity as needed.
-            var outDto = new UserDto { Id = user.Id, Username = user.Username, FullName = user.FullName};
-            return Ok(outDto);
+            // Build JWT
+            var jwtSection = _config.GetSection("Jwt");
+            var key = jwtSection.GetValue<string>("Key") ?? "ChangeThisSecretToAStrongRandomValueForProduction";
+            var issuer = jwtSection.GetValue<string>("Issuer") ?? "semis";
+            var audience = jwtSection.GetValue<string>("Audience") ?? "semis_clients";
+            var expireMinutes = jwtSection.GetValue<int?>("ExpireMinutes") ?? 120;
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            };
+            if (!string.IsNullOrWhiteSpace(user.Role?.RoleName))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, user.Role.RoleName));
+            }
+
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+            var creds = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expireMinutes),
+                signingCredentials: creds
+            );
+
+            var tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new { token = tokenStr, user = new UserDto { Id = user.Id, Username = user.Username, FullName = user.FullName, Role = user.Role?.RoleName } });
         }
     }
 }
