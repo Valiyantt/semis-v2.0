@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api.Data;
+using backend.Data;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
 [ApiController]
-    [Route("api/[controller]")]
+    [Route("backend/[controller]")]
     public class LobbyController : ControllerBase
     {
         private readonly AppDbContext _ctx;

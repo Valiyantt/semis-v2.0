@@ -1,14 +1,14 @@
 // Controllers/Administration/FacultyController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.Models;
+using backend.Data;
+using backend.Models;
 using System.Threading.Tasks;
 
-namespace api.Controllers.Administration
+namespace backend.Controllers.Administration
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("backend/[controller]")]
     public class FacultyController : ControllerBase
     {
         private readonly AppDbContext _context;

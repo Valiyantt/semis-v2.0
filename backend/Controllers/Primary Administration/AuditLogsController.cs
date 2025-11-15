@@ -6,7 +6,7 @@ using backend.Models;
 
 namespace backend.Controllers.SuperAdminArea
 {
-    [Route("api/superadmin/[controller]")]
+    [Route("backend/superadmin/[controller]")]
     [ApiController]
     [Authorize(Roles = "SuperAdmin")]
     public class AuditLogsController : ControllerBase

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "n9HarUXwnSI=",
+  "dgSpecHash": "V0kMyK2N/vE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\api.csproj",
+  "projectFilePath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Gigabyte\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Gigabyte\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

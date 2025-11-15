@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\api.csproj": {}
+    "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\api.csproj": {
+    "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\api.csproj",
+        "projectPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj",
         "packagesPath": "C:\\Users\\Gigabyte\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\api\\obj\\",
+        "outputPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

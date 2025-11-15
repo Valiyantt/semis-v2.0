@@ -164,3 +164,12 @@ C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\api\obj\Debug\net9.0\refint\api.dl
 C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\api\obj\Debug\net9.0\api.pdb
 C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\api\obj\Debug\net9.0\api.genruntimeconfig.cache
 C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\api\obj\Debug\net9.0\ref\api.dll
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.csproj.AssemblyReference.cache
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.AssemblyInfoInputs.cache
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.AssemblyInfo.cs
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.csproj.CoreCompileInputs.cache
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Gigabyte\Documents\GitHub\semis-v2.0\backend\obj\Debug\net9.0\api.sourcelink.json

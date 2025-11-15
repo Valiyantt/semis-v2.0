@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace backend.Controllers
 {
 [ApiController]
-    [Route("api/[controller]")]
+    [Route("backend/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _ctx;

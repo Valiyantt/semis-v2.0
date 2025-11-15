@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.DTOs;
-using api.Models;
+using backend.Data;
+using backend.DTOs;
+using backend.Models;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("backend/[controller]")]
     public class ProgramsController : ControllerBase
     {
         private readonly AppDbContext _ctx;

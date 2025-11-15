@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using api.Data;
-using api.DTOs;
-using api.Models;
+using backend.Data;
+using backend.DTOs;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
 [ApiController]
     [Route("api/[controller]")]
