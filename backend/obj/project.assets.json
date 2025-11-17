@@ -3907,7 +3907,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj",
-      "projectName": "api",
+      "projectName": "backend",
       "projectPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\api.csproj",
       "packagesPath": "C:\\Users\\Gigabyte\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Gigabyte\\Documents\\GitHub\\semis-v2.0\\backend\\obj\\",
