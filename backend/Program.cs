@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.Repositories;
+using backend.Data;
+using backend.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

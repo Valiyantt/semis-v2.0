@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.Models;
+using backend.Data;
+using backend.Models;
 using System.Threading.Tasks;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using api.Data;
+using backend.Data;
 
 #nullable disable
 
-namespace api.Migrations
+namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251104121213_InitFreshSchema")]
-    partial class InitFreshSchema
+    [Migration("20251117103959_InitializeDatabase")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
-            modelBuilder.Entity("api.Models.AboutUs", b =>
+            modelBuilder.Entity("backend.Models.AboutUs", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,13 +35,46 @@ namespace api.Migrations
                     b.ToTable("AboutUsEntries");
                 });
 
-            modelBuilder.Entity("api.Models.Announcement", b =>
+            modelBuilder.Entity("backend.Models.Administration", b =>
+                {
+                    b.Property<int>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AdminId");
+
+                    b.ToTable("Administrations");
+                });
+
+            modelBuilder.Entity("backend.Models.Announcement", b =>
                 {
                     b.Property<int>("AnnouncementId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DatePosted")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
@@ -60,7 +93,7 @@ namespace api.Migrations
                     b.ToTable("Announcements");
                 });
 
-            modelBuilder.Entity("api.Models.AppRole", b =>
+            modelBuilder.Entity("backend.Models.AppRole", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -79,7 +112,7 @@ namespace api.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("api.Models.AppUser", b =>
+            modelBuilder.Entity("backend.Models.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +153,7 @@ namespace api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("api.Models.AuditLog", b =>
+            modelBuilder.Entity("backend.Models.AuditLog", b =>
                 {
                     b.Property<int>("AuditLogId")
                         .ValueGeneratedOnAdd()
@@ -142,7 +175,7 @@ namespace api.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("api.Models.BillingStatement", b =>
+            modelBuilder.Entity("backend.Models.BillingStatement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +200,7 @@ namespace api.Migrations
                     b.ToTable("BillingStatements");
                 });
 
-            modelBuilder.Entity("api.Models.Department", b =>
+            modelBuilder.Entity("backend.Models.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
@@ -186,7 +219,37 @@ namespace api.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("api.Models.ProgramEntry", b =>
+            modelBuilder.Entity("backend.Models.Faculty", b =>
+                {
+                    b.Property<int>("FacultyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FacultyId");
+
+                    b.ToTable("Faculties");
+                });
+
+            modelBuilder.Entity("backend.Models.ProgramEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +276,37 @@ namespace api.Migrations
                     b.ToTable("Programs");
                 });
 
-            modelBuilder.Entity("api.Models.SuperAdmin", b =>
+            modelBuilder.Entity("backend.Models.Student", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("StudentId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("backend.Models.SuperAdmin", b =>
                 {
                     b.Property<int>("SuperAdminId")
                         .ValueGeneratedOnAdd()
@@ -241,7 +334,7 @@ namespace api.Migrations
                     b.ToTable("SuperAdmins");
                 });
 
-            modelBuilder.Entity("api.Models.WelcomePage", b =>
+            modelBuilder.Entity("backend.Models.WelcomePage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,9 +352,9 @@ namespace api.Migrations
                     b.ToTable("WelcomePages");
                 });
 
-            modelBuilder.Entity("api.Models.AppUser", b =>
+            modelBuilder.Entity("backend.Models.AppUser", b =>
                 {
-                    b.HasOne("api.Models.AppRole", "Role")
+                    b.HasOne("backend.Models.AppRole", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -270,7 +363,7 @@ namespace api.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("api.Models.AppRole", b =>
+            modelBuilder.Entity("backend.Models.AppRole", b =>
                 {
                     b.Navigation("Users");
                 });
