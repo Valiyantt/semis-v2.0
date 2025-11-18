@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin123");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    // Temporary login logic — replace with API call later
-    if (email === "admin@semis.com" && password === "admin") {
-      localStorage.setItem("authenticated", "true");
-      navigate("/dashboard");
-    } else {
-      alert("Invalid credentials");
+    try {
+      await login({ username, password });
+      navigate("/superadmin/dashboard");
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || "Login failed";
+      setError(msg);
+      console.error("Login error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,16 +39,18 @@ const Login: React.FC = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          {error && <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">{error}</div>}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Email
+              Username
             </label>
             <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="admin"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
+              disabled={loading}
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition"
             />
           </div>
@@ -55,15 +65,17 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={loading}
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#800000] text-white font-semibold py-2.5 rounded-lg hover:bg-[#660000] transition duration-200 shadow-sm"
+            disabled={loading}
+            className="w-full bg-[#800000] text-white font-semibold py-2.5 rounded-lg hover:bg-[#660000] transition duration-200 shadow-sm disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

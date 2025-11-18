@@ -6,6 +6,9 @@ import SuperAdminStudents from "./pages/superadmin/SuperAdminStudents";
 import SuperAdminFaculty from "./pages/superadmin/SuperAdminFaculty";
 import SuperAdminReports from "./pages/superadmin/SuperAdminReports";
 import SuperAdminSettings from "./pages/superadmin/SuperAdminSettings";
+import SuperAdminList from './pages/superadmin/SuperAdminList';
+import SuperAdminForm from './pages/superadmin/SuperAdminForm';
+import SuperAdminDetails from './pages/superadmin/SuperAdminDetails';
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -68,6 +71,30 @@ function App() {
         path="/superadmin/settings"
         element={
           <PrivateRoute element={<SuperAdminLayout><SuperAdminSettings /></SuperAdminLayout>} />
+        }
+      />
+      <Route
+        path="/superadmin/superadmins"
+        element={
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminList /></SuperAdminLayout>} />
+        }
+      />
+      <Route
+        path="/superadmin/superadmins/new"
+        element={
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminForm /></SuperAdminLayout>} />
+        }
+      />
+      <Route
+        path="/superadmin/superadmins/:id"
+        element={
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminDetails /></SuperAdminLayout>} />
+        }
+      />
+      <Route
+        path="/superadmin/superadmins/:id/edit"
+        element={
+          <PrivateRoute element={<SuperAdminLayout><SuperAdminForm /></SuperAdminLayout>} />
         }
       />
     </Routes>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -7,14 +7,31 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-20 bg-[#800000] text-white shadow-md h-16 flex items-center px-6">
+    <header className="fixed top-0 left-0 right-0 z-20 bg-white/60 backdrop-blur-sm text-gray-800 h-16 flex items-center px-6 border-b border-white/30">
       <button
         onClick={onToggleSidebar}
-        className="mr-4 p-2 hover:bg-[#660000] rounded-md transition"
+        className="mr-4 p-2 hover:bg-gray-100 rounded-md transition"
+        aria-label="Toggle sidebar"
       >
         <Menu size={22} />
       </button>
-      <h1 className="text-2xl font-bold tracking-wide">SEMIS</h1>
+
+      <div className="flex-1">
+        <h1 className="text-lg font-semibold tracking-wide">SEMIS</h1>
+      </div>
+
+      <div className="flex items-center gap-4">
+        <button className="p-2 rounded-md hover:bg-gray-100">
+          <Bell size={18} />
+        </button>
+        <div className="flex items-center gap-3">
+          <img src="/src/assets/avatar-placeholder.png" alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+          <div className="text-sm">
+            <div className="font-semibold">Administrator</div>
+            <div className="text-xs text-gray-500">SuperAdmin</div>
+          </div>
+        </div>
+      </div>
     </header>
   );
 };
