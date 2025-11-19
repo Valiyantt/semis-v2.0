@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("backend/[controller]")]
     [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminController : ControllerBase
     {

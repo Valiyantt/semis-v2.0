@@ -27,14 +27,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 font-[Corbel]">
-      <div className="bg-white shadow-xl rounded-2xl px-10 py-8 w-[400px] border border-gray-200">
+    <div className="w-screen flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 font-[Corbel] px-4">
+      <div className="bg-white shadow-xl rounded-2xl px-6 sm:px-8 py-6 sm:py-8 w-full max-w-md md:max-w-lg lg:max-w-xl border border-gray-200">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[#800000] mb-2 tracking-wide">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#800000] mb-2 tracking-wide">
             SEMIS
           </h1>
-          <p className="text-gray-500 text-sm">School Event Management Information System</p>
+          <p className="text-gray-500 text-sm">School Enterprise Management Information System</p>
         </div>
 
         {/* Form */}
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
               disabled={loading}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition text-sm sm:text-base"
             />
           </div>
 
@@ -66,14 +66,14 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-[#800000] outline-none transition text-sm sm:text-base"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#800000] text-white font-semibold py-2.5 rounded-lg hover:bg-[#660000] transition duration-200 shadow-sm disabled:opacity-50"
+            className="w-full bg-[#800000] text-white font-semibold py-2.5 rounded-lg hover:bg-[#660000] transition duration-200 shadow-sm disabled:opacity-50 text-sm sm:text-base"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
