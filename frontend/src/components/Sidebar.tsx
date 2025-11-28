@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Users, BookOpen, BarChart2, Settings } from "lucide-react";
+import { Home, Users, BookOpen, BarChart2, Settings, ChevronRight, User } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const navItems =
     role === "superadmin"
       ? [
@@ -23,16 +24,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
 
   return (
     <aside
-      className={`fixed top-16 left-0 h-[calc(100%-4rem)] w-64 bg-slate-900/80 text-white backdrop-blur-md shadow-lg transform transition-transform duration-300 ease-in-out ${
-        isOpen ? "translate-x-0" : "-translate-x-64"
-      } md:translate-x-0 rounded-r-2xl`}
+      onMouseEnter={() => setSidebarCollapsed(false)}
+      onMouseLeave={() => setSidebarCollapsed(true)}
+      className={`fixed top-16 left-0 h-[calc(100%-4rem)] bg-[#800000] text-white backdrop-blur-md shadow-lg transform transition-all duration-300 ease-in-out ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      } md:translate-x-0 rounded-r-2xl ${
+        sidebarCollapsed ? "w-20" : "w-64"
+      }`}
     >
       <div className="p-4 border-b border-white/10 flex items-center gap-3">
-        <img src="/src/assets/avatar-placeholder.png" alt="avatar" className="w-12 h-12 rounded-full object-cover" />
-        <div>
-          <div className="font-semibold text-sm">Zoeyshen</div>
-          <div className="text-xs text-white/70">Administrator</div>
+        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+          <User size={24} className="text-white" />
         </div>
+        {!sidebarCollapsed && (
+          <div className="min-w-0">
+            <div className="font-semibold text-sm truncate">Zoeyshen</div>
+            <div className="text-xs text-white/70 truncate">Administrator</div>
+          </div>
+        )}
       </div>
 
       <nav className="mt-4 px-3">
@@ -42,22 +51,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition ${
-                    isActive ? "bg-white/10 font-semibold" : "text-white/90"
+                  `flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition whitespace-nowrap font-bold text-white ${
+                    isActive ? "bg-white/20" : ""
                   }`
                 }
               >
-                <span className="opacity-90">{item.icon}</span>
-                <span>{item.name}</span>
+                <span className="opacity-90 flex-shrink-0">{item.icon}</span>
+                {!sidebarCollapsed && <span className="flex-1">{item.name}</span>}
+                {!sidebarCollapsed && <ChevronRight size={14} className="ml-auto" />}
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
 
-      <div className="absolute bottom-6 left-4 right-4">
-        <div className="text-xs text-white/70">© SEMIS</div>
-      </div>
+      {!sidebarCollapsed && (
+        <div className="absolute bottom-6 left-4 right-4">
+          <div className="text-xs text-white/70">© SEMIS</div>
+        </div>
+      )}
     </aside>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, User } from "lucide-react";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
       </button>
 
       <div className="flex-1">
-        <h1 className="text-lg font-semibold tracking-wide">SEMIS</h1>
+        <h1 className="text-lg font-semibold tracking-wide text-[#800000]">SEMIS</h1>
       </div>
 
       <div className="flex items-center gap-4">
@@ -25,7 +25,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           <Bell size={18} />
         </button>
         <div className="flex items-center gap-3">
-          <img src="/src/assets/avatar-placeholder.png" alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+          <div className="w-10 h-10 rounded-full bg-[#800000]/20 flex items-center justify-center">
+            <User size={20} className="text-[#800000]" />
+          </div>
           <div className="text-sm">
             <div className="font-semibold">Administrator</div>
             <div className="text-xs text-gray-500">SuperAdmin</div>
