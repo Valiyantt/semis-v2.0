@@ -9,6 +9,7 @@ import SuperAdminSettings from "./pages/superadmin/SuperAdminSettings";
 import SuperAdminList from './pages/superadmin/SuperAdminList';
 import SuperAdminForm from './pages/superadmin/SuperAdminForm';
 import SuperAdminDetails from './pages/superadmin/SuperAdminDetails';
+import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -26,6 +27,24 @@ const SuperAdminLayout: React.FC<{ children: React.ReactNode }> = ({ children })
     <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="superadmin" />
+
+      {/* Main layout */}
+      <div className="flex-1 flex flex-col">
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <main className="mt-16 md:ml-64 p-8 transition-all duration-300">{children}</main>
+      </div>
+    </div>
+  );
+};
+
+// Common layout wrapper for Faculty pages
+const FacultyLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="faculty" />
 
       {/* Main layout */}
       <div className="flex-1 flex flex-col">
@@ -95,6 +114,14 @@ function App() {
         path="/superadmin/superadmins/:id/edit"
         element={
           <PrivateRoute element={<SuperAdminLayout><SuperAdminForm /></SuperAdminLayout>} />
+        }
+      />
+
+      {/* Faculty Protected Routes */}
+      <Route
+        path="/faculty/dashboard"
+        element={
+          <PrivateRoute element={<FacultyLayout><FacultyDashboard /></FacultyLayout>} />
         }
       />
     </Routes>

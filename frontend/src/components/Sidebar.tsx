@@ -20,6 +20,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
           { name: "Settings", path: "/superadmin/settings", icon: <Settings size={16} /> },
           { name: "SuperAdmins", path: "/superadmin/superadmins", icon: <Users size={16} /> },
         ]
+      : role === "faculty"
+      ? [
+          { name: "Dashboard", path: "/faculty/dashboard", icon: <Home size={16} /> },
+          { name: "My Classes", path: "/faculty/classes", icon: <BookOpen size={16} /> },
+          { name: "Students", path: "/faculty/students", icon: <Users size={16} /> },
+          { name: "Assignments", path: "/faculty/assignments", icon: <BarChart2 size={16} /> },
+          { name: "Grades", path: "/faculty/grades", icon: <BarChart2 size={16} /> },
+        ]
       : [];
 
   return (
