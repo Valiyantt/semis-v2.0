@@ -19,6 +19,8 @@ namespace backend.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<SchoolLevel> SchoolLevels { get; set; }
+        public DbSet<Grade> Grades { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
