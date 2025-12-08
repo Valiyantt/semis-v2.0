@@ -96,37 +96,101 @@ namespace backend.Data
             if (!ctx.Roles.Any())
             {
                 var superRole = new AppRole { RoleName = "SuperAdmin", Description = "Full system owner" };
+                var facultyRole = new AppRole { RoleName = "Faculty", Description = "Faculty member" };
+                var studentRole = new AppRole { RoleName = "Student", Description = "Student user" };
                 var adminRole = new AppRole { RoleName = "Admin", Description = "Administrative user" };
-                ctx.Roles.AddRange(superRole, adminRole);
+                ctx.Roles.AddRange(superRole, facultyRole, studentRole, adminRole);
                 await ctx.SaveChangesAsync();
 
-                // Add a default superadmin user and assign SuperAdmin role
+                // Add three dummy users if none exist
                 if (!ctx.Users.Any())
                 {
-                    var admin = new AppUser
+                    // SuperAdmin Account
+                    var superAdmin = new AppUser
                     {
                         Username = "admin",
                         FullName = "Super Administrator",
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // change in production
-                        RoleId = superRole.RoleId
+                        Email = "admin@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                        RoleId = superRole.RoleId,
+                        IsActive = true
                     };
-                    ctx.Users.Add(admin);
+
+                    // Faculty Account
+                    var faculty = new AppUser
+                    {
+                        Username = "faculty01",
+                        FullName = "Dr. James Anderson",
+                        Email = "james.anderson@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("faculty123"),
+                        RoleId = facultyRole.RoleId,
+                        IsActive = true
+                    };
+
+                    // Student Account
+                    var student = new AppUser
+                    {
+                        Username = "student01",
+                        FullName = "John Smith",
+                        Email = "john.smith@student.semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("student123"),
+                        RoleId = studentRole.RoleId,
+                        IsActive = true
+                    };
+
+                    ctx.Users.AddRange(superAdmin, faculty, student);
                 }
             }
             else
             {
-                // Roles exist; ensure at least one admin user exists
+                // Roles exist; ensure dummy accounts exist
                 if (!ctx.Users.Any())
                 {
-                    var super = ctx.Roles.FirstOrDefault(r => r.RoleName == "SuperAdmin") ?? ctx.Roles.FirstOrDefault();
-                    var admin = new AppUser
+                    var superRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "SuperAdmin");
+                    var facultyRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Faculty");
+                    var studentRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Student");
+
+                    if (superRole != null)
                     {
-                        Username = "admin",
-                        FullName = "Administrator",
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-                        RoleId = super?.RoleId ?? 0
-                    };
-                    ctx.Users.Add(admin);
+                        var superAdmin = new AppUser
+                        {
+                            Username = "admin",
+                            FullName = "Super Administrator",
+                            Email = "admin@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                            RoleId = superRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(superAdmin);
+                    }
+
+                    if (facultyRole != null)
+                    {
+                        var faculty = new AppUser
+                        {
+                            Username = "faculty01",
+                            FullName = "Dr. James Anderson",
+                            Email = "james.anderson@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("faculty123"),
+                            RoleId = facultyRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(faculty);
+                    }
+
+                    if (studentRole != null)
+                    {
+                        var student = new AppUser
+                        {
+                            Username = "student01",
+                            FullName = "John Smith",
+                            Email = "john.smith@student.semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("student123"),
+                            RoleId = studentRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(student);
+                    }
                 }
             }
 

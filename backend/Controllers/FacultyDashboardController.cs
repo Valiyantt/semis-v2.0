@@ -22,7 +22,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFacultyDashboard()
+        public IActionResult GetFacultyDashboard()
         {
             try
             {
@@ -90,11 +90,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("classes")]
-        public async Task<IActionResult> GetFacultyClasses()
+        public IActionResult GetFacultyClasses()
         {
             try
             {
-                var classes = new List<dynamic>
+                var classes = new List<object>
                 {
                     new { classId = 1, name = "Advanced Mathematics", studentCount = 35, schedule = "MWF 10:00-11:30", room = "204" },
                     new { classId = 2, name = "Physics 101", studentCount = 42, schedule = "MWF 2:00-3:30", room = "Lab A" },
@@ -112,11 +112,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("assignments")]
-        public async Task<IActionResult> GetPendingAssignments()
+        public IActionResult GetPendingAssignments()
         {
             try
             {
-                var assignments = new List<dynamic>
+                var assignments = new List<object>
                 {
                     new { assignmentId = 1, title = "Midterm Exam Grading", course = "Advanced Mathematics", submissionCount = 35, pendingCount = 8 },
                     new { assignmentId = 2, title = "Lab Report Review", course = "Physics 101", submissionCount = 40, pendingCount = 5 },
@@ -132,11 +132,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("performance")]
-        public async Task<IActionResult> GetClassPerformance()
+        public IActionResult GetClassPerformance()
         {
             try
             {
-                var performance = new List<dynamic>
+                var performance = new List<object>
                 {
                     new { course = "Advanced Mathematics", avgScore = 78, passRate = 85 },
                     new { course = "Physics 101", avgScore = 85, passRate = 92 },

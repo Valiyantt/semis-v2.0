@@ -108,7 +108,7 @@ using (var scope = app.Services.CreateScope())
     var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     ctx.Database.Migrate();
     await DataSeeder.SeedAsync(ctx);
-    await Seeders.SchoolStructureSeeder.SeedSchoolStructure(ctx);
+    await backend.Seeders.SchoolStructureSeeder.SeedSchoolStructure(ctx);
 }
 
 app.Run();

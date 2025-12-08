@@ -26,7 +26,7 @@ namespace backend.Models
         [Required]
         public int SchoolLevelId { get; set; }
 
-        public SchoolLevel SchoolLevel { get; set; }
+        public SchoolLevel? SchoolLevel { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

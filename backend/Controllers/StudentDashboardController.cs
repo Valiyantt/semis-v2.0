@@ -22,7 +22,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetStudentDashboard()
+        public IActionResult GetStudentDashboard()
         {
             try
             {
@@ -71,11 +71,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("courses")]
-        public async Task<IActionResult> GetStudentCourses()
+        public IActionResult GetStudentCourses()
         {
             try
             {
-                var courses = new List<dynamic>
+                var courses = new List<object>
                 {
                     new { courseId = 1, name = "Advanced Mathematics", professor = "Prof. Dr. Anderson", credit = 3, grade = "A", status = "Active" },
                     new { courseId = 2, name = "Physics 101", professor = "Prof. Sarah Miller", credit = 4, grade = "A-", status = "Active" },
@@ -93,16 +93,16 @@ namespace backend.Controllers
         }
 
         [HttpGet("assignments")]
-        public async Task<IActionResult> GetStudentAssignments()
+        public IActionResult GetStudentAssignments()
         {
             try
             {
-                var assignments = new List<dynamic>
+                var assignments = new List<object>
                 {
-                    new { assignmentId = 1, title = "Calculus Problem Set 5", course = "Advanced Mathematics", dueDate = "2025-12-10", status = "Pending", submittedDate = null },
-                    new { assignmentId = 2, title = "Lab Report - Energy Transfer", course = "Physics 101", dueDate = "2025-12-13", status = "Pending", submittedDate = null },
-                    new { assignmentId = 3, title = "Essay: British Romanticism", course = "English Literature", dueDate = "2025-12-15", status = "Pending", submittedDate = null },
-                    new { assignmentId = 4, title = "Chapter 12-14 Questions", course = "Chemistry 201", dueDate = "2025-12-08", status = "Overdue", submittedDate = null }
+                    new { assignmentId = 1, title = "Calculus Problem Set 5", course = "Advanced Mathematics", dueDate = "2025-12-10", status = "Pending", submittedDate = (string?)null },
+                    new { assignmentId = 2, title = "Lab Report - Energy Transfer", course = "Physics 101", dueDate = "2025-12-13", status = "Pending", submittedDate = (string?)null },
+                    new { assignmentId = 3, title = "Essay: British Romanticism", course = "English Literature", dueDate = "2025-12-15", status = "Pending", submittedDate = (string?)null },
+                    new { assignmentId = 4, title = "Chapter 12-14 Questions", course = "Chemistry 201", dueDate = "2025-12-08", status = "Overdue", submittedDate = (string?)null }
                 };
 
                 return Ok(assignments);
@@ -114,11 +114,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("grades")]
-        public async Task<IActionResult> GetStudentGrades()
+        public IActionResult GetStudentGrades()
         {
             try
             {
-                var grades = new List<dynamic>
+                var grades = new List<object>
                 {
                     new { courseId = 1, courseName = "Advanced Mathematics", currentGrade = "A", score = 92, passStatus = "Pass" },
                     new { courseId = 2, courseName = "Physics 101", currentGrade = "A-", score = 88, passStatus = "Pass" },
@@ -136,11 +136,11 @@ namespace backend.Controllers
         }
 
         [HttpGet("schedule")]
-        public async Task<IActionResult> GetStudentSchedule()
+        public IActionResult GetStudentSchedule()
         {
             try
             {
-                var schedule = new List<dynamic>
+                var schedule = new List<object>
                 {
                     new { courseId = 1, courseName = "Advanced Mathematics", professor = "Prof. Dr. Anderson", schedule = "MWF 10:00-11:30", room = "204" },
                     new { courseId = 2, courseName = "Physics 101", professor = "Prof. Sarah Miller", schedule = "MWF 2:00-3:30", room = "Lab A" },
@@ -158,3 +158,4 @@ namespace backend.Controllers
         }
     }
 }
+
