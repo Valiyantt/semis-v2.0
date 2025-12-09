@@ -150,6 +150,60 @@ namespace backend.Controllers
             }
         }
 
+        [HttpGet("revenue")]
+        public async Task<IActionResult> GetRevenueReport()
+        {
+            try
+            {
+                var billingStatements = await _context.BillingStatements.ToListAsync();
+                
+                var totalRevenue = billingStatements.Sum(b => b.Amount);
+                var totalBilling = billingStatements.Count;
+                var averageBilling = totalBilling > 0 ? totalRevenue / totalBilling : 0;
+                
+                // Group by month for trend analysis
+                var monthlyRevenue = billingStatements
+                    .GroupBy(b => b.DueDate.Month)
+                    .Select(g => new
+                    {
+                        Month = g.Key,
+                        Total = g.Sum(b => b.Amount),
+                        Count = g.Count()
+                    })
+                    .OrderBy(m => m.Month)
+                    .ToList();
+
+                var revenueReport = new
+                {
+                    TotalRevenue = totalRevenue,
+                    TotalBillings = totalBilling,
+                    AverageBillingAmount = averageBilling,
+                    PendingAmount = billingStatements.Where(b => b.DueDate > DateTime.UtcNow).Sum(b => b.Amount),
+                    OverdueAmount = billingStatements.Where(b => b.DueDate < DateTime.UtcNow).Sum(b => b.Amount),
+                    MonthlyBreakdown = monthlyRevenue,
+                    RecentTransactions = billingStatements
+                        .OrderByDescending(b => b.DueDate)
+                        .Take(5)
+                        .Select(b => new
+                        {
+                            b.Id,
+                            b.AccountName,
+                            b.Amount,
+                            b.Details,
+                            b.DueDate,
+                            Status = b.DueDate > DateTime.UtcNow ? "Pending" : "Overdue"
+                        })
+                        .ToList()
+                };
+
+                return Ok(revenueReport);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error fetching revenue report", error = ex.Message });
+            }
+        }
+
         private async Task<List<dynamic>> GetRecentActivity()
         {
             var activities = new List<dynamic>

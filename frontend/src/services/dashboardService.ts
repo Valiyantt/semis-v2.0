@@ -62,4 +62,14 @@ export const superadminDashboardService = {
       throw error;
     }
   },
+
+  getRevenueReport: async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/Dashboard/revenue`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching revenue report:", error);
+      throw error;
+    }
+  },
 };
