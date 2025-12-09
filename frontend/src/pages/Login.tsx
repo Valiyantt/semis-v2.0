@@ -15,8 +15,19 @@ const Login: React.FC = () => {
     setError("");
 
     try {
-      await login({ username, password });
-      navigate("/superadmin/dashboard");
+      const response = await login({ username, password });
+      
+      // Route based on user role
+      const userRole = response.user.role?.toLowerCase();
+      if (userRole === "superadmin") {
+        navigate("/superadmin/dashboard");
+      } else if (userRole === "faculty") {
+        navigate("/faculty/dashboard");
+      } else if (userRole === "student") {
+        navigate("/student/dashboard");
+      } else {
+        navigate("/superadmin/dashboard"); // Default fallback
+      }
     } catch (err: any) {
       const msg = err?.response?.data?.message || err?.message || "Login failed";
       setError(msg);
@@ -78,6 +89,16 @@ const Login: React.FC = () => {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        {/* Test Credentials Info */}
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <p className="text-xs font-semibold text-gray-600 mb-2">Test Credentials:</p>
+          <div className="space-y-1 text-xs text-gray-600">
+            <p><span className="font-semibold">SuperAdmin:</span> admin / admin123</p>
+            <p><span className="font-semibold">Faculty:</span> faculty01 / faculty123</p>
+            <p><span className="font-semibold">Student:</span> student01 / student123</p>
+          </div>
+        </div>
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-500 mt-6">
