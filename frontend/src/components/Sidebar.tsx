@@ -5,7 +5,7 @@ import { Home, Users, BookOpen, BarChart2, Settings, ChevronRight, User } from "
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  role: "superadmin" | "faculty" | "student" | "registrar"; // extensible for later
+  role: "superadmin" | "faculty" | "student" | "registrar" | "billing";
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
@@ -35,6 +35,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
           { name: "Assignments", path: "/student/assignments", icon: <BarChart2 size={16} /> },
           { name: "Grades", path: "/student/grades", icon: <BarChart2 size={16} /> },
           { name: "Schedule", path: "/student/schedule", icon: <Users size={16} /> },
+        ]
+      : role === "registrar"
+      ? [
+          { name: "Dashboard", path: "/registrar/dashboard", icon: <Home size={16} /> },
+          { name: "Student Records", path: "/registrar/students", icon: <Users size={16} /> },
+          { name: "Enrollments", path: "/registrar/enrollments", icon: <BookOpen size={16} /> },
+          { name: "Reports", path: "/registrar/reports", icon: <BarChart2 size={16} /> },
+          { name: "Transcripts", path: "/registrar/transcripts", icon: <Settings size={16} /> },
+        ]
+      : role === "billing"
+      ? [
+          { name: "Dashboard", path: "/billing/dashboard", icon: <Home size={16} /> },
+          { name: "Billing Records", path: "/billing/records", icon: <Users size={16} /> },
+          { name: "Payments", path: "/billing/payments", icon: <BookOpen size={16} /> },
+          { name: "Reports", path: "/billing/reports", icon: <BarChart2 size={16} /> },
+          { name: "Collections", path: "/billing/collections", icon: <Settings size={16} /> },
         ]
       : [];
 
