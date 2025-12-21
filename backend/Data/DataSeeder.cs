@@ -101,7 +101,10 @@ namespace backend.Data
                 var adminRole = new AppRole { RoleName = "Admin", Description = "Administrative user" };
                 var registrarRole = new AppRole { RoleName = "Registrar", Description = "Handles student records and enrollment" };
                 var billingRole = new AppRole { RoleName = "Billing", Description = "Handles payment transactions and billing" };
-                ctx.Roles.AddRange(superRole, facultyRole, studentRole, adminRole, registrarRole, billingRole);
+                var librarianRole = new AppRole { RoleName = "Librarian", Description = "Manages library and book borrowing" };
+                var securityRole = new AppRole { RoleName = "Security", Description = "Manages campus security and access logs" };
+                var administrationRole = new AppRole { RoleName = "Administration", Description = "Manages system settings and announcements" };
+                ctx.Roles.AddRange(superRole, facultyRole, studentRole, adminRole, registrarRole, billingRole, librarianRole, securityRole, administrationRole);
                 await ctx.SaveChangesAsync();
 
                 // Add three dummy users if none exist
@@ -162,7 +165,40 @@ namespace backend.Data
                         IsActive = true
                     };
 
-                    ctx.Users.AddRange(superAdmin, faculty, student, registrar, billing);
+                    // Librarian Account
+                    var librarian = new AppUser
+                    {
+                        Username = "librarian01",
+                        FullName = "Sarah Thompson",
+                        Email = "sarah.thompson@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("librarian123"),
+                        RoleId = librarianRole.RoleId,
+                        IsActive = true
+                    };
+
+                    // Security Account
+                    var security = new AppUser
+                    {
+                        Username = "security01",
+                        FullName = "Michael Johnson",
+                        Email = "michael.johnson@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("security123"),
+                        RoleId = securityRole.RoleId,
+                        IsActive = true
+                    };
+
+                    // Administration Account
+                    var administration = new AppUser
+                    {
+                        Username = "admin02",
+                        FullName = "Emily Davis",
+                        Email = "emily.davis@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                        RoleId = administrationRole.RoleId,
+                        IsActive = true
+                    };
+
+                    ctx.Users.AddRange(superAdmin, faculty, student, registrar, billing, librarian, security, administration);
                 }
             }
             else
@@ -175,6 +211,9 @@ namespace backend.Data
                     var studentRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Student");
                     var registrarRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Registrar");
                     var billingRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Billing");
+                    var librarianRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Librarian");
+                    var securityRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Security");
+                    var administrationRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Administration");
 
                     if (superRole != null)
                     {
@@ -244,6 +283,48 @@ namespace backend.Data
                             IsActive = true
                         };
                         ctx.Users.Add(billing);
+                    }
+
+                    if (librarianRole != null)
+                    {
+                        var librarian = new AppUser
+                        {
+                            Username = "librarian01",
+                            FullName = "Sarah Thompson",
+                            Email = "sarah.thompson@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("librarian123"),
+                            RoleId = librarianRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(librarian);
+                    }
+
+                    if (securityRole != null)
+                    {
+                        var security = new AppUser
+                        {
+                            Username = "security01",
+                            FullName = "Michael Johnson",
+                            Email = "michael.johnson@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("security123"),
+                            RoleId = securityRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(security);
+                    }
+
+                    if (administrationRole != null)
+                    {
+                        var administration = new AppUser
+                        {
+                            Username = "admin02",
+                            FullName = "Emily Davis",
+                            Email = "emily.davis@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                            RoleId = administrationRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(administration);
                     }
                 }
             }

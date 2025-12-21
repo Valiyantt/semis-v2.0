@@ -21,6 +21,13 @@ namespace backend.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<SchoolLevel> SchoolLevels { get; set; }
         public DbSet<Grade> Grades { get; set; }
+        public DbSet<AccessLog> AccessLogs { get; set; }
+        public DbSet<IncidentReport> IncidentReports { get; set; }
+        public DbSet<SecurityAlert> SecurityAlerts { get; set; }
+        public DbSet<VisitorLog> VisitorLogs { get; set; }
+        public DbSet<SystemSettings> SystemSettings { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<BorrowRecord> BorrowRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
@@ -38,6 +45,26 @@ namespace backend.Data
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // AccessLog relationship
+            mb.Entity<AccessLog>()
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // BorrowRecord relationships
+            mb.Entity<BorrowRecord>()
+                .HasOne(b => b.Book)
+                .WithMany(bk => bk.BorrowRecords)
+                .HasForeignKey(b => b.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<BorrowRecord>()
+                .HasOne(b => b.Student)
+                .WithMany()
+                .HasForeignKey(b => b.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Validation rules
             mb.Entity<ProgramEntry>()
                 .Property(p => p.Title)
@@ -51,6 +78,27 @@ namespace backend.Data
             mb.Entity<AppRole>()
                 .Property(r => r.RoleName)
                 .HasMaxLength(50)
+                .IsRequired();
+
+            // Book properties
+            mb.Entity<Book>()
+                .Property(b => b.Title)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            mb.Entity<Book>()
+                .Property(b => b.ISBN)
+                .HasMaxLength(20);
+
+            // AccessLog properties
+            mb.Entity<AccessLog>()
+                .Property(a => a.Location)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            mb.Entity<AccessLog>()
+                .Property(a => a.Purpose)
+                .HasMaxLength(200)
                 .IsRequired();
         }
     }
