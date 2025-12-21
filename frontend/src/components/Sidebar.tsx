@@ -41,13 +41,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, role }) => {
           { name: "Dashboard", path: "/registrar/dashboard", icon: <Home size={16} /> },
           { name: "Student Records", path: "/registrar/students", icon: <Users size={16} /> },
           { name: "Enrollments", path: "/registrar/enrollments", icon: <BookOpen size={16} /> },
-          { name: "Reports", path: "/registrar/reports", icon: <BarChart2 size={16} /> },
-          { name: "Transcripts", path: "/registrar/transcripts", icon: <Settings size={16} /> },
+          { name: "Transcripts", path: "/registrar/transcripts", icon: <BarChart2 size={16} /> },
+          { name: "Reports", path: "/registrar/reports", icon: <Settings size={16} /> },
         ]
       : role === "billing"
       ? [
           { name: "Dashboard", path: "/billing/dashboard", icon: <Home size={16} /> },
-          { name: "Billing Records", path: "/billing/records", icon: <Users size={16} /> },
+          { name: "Invoices", path: "/billing/invoices", icon: <Users size={16} /> },
           { name: "Payments", path: "/billing/payments", icon: <BookOpen size={16} /> },
           { name: "Reports", path: "/billing/reports", icon: <BarChart2 size={16} /> },
           { name: "Collections", path: "/billing/collections", icon: <Settings size={16} /> },

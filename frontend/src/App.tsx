@@ -12,7 +12,11 @@ import SuperAdminDetails from './pages/superadmin/SuperAdminDetails';
 import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import RegistrarDashboard from "./pages/registrar/RegistrarDashboard";
+import RegistrarEnrollments from "./pages/registrar/RegistrarEnrollments";
+import RegistrarTranscripts from "./pages/registrar/RegistrarTranscripts";
 import BillingDashboard from "./pages/billing/BillingDashboard";
+import BillingPayments from "./pages/billing/BillingPayments";
+import BillingInvoices from "./pages/billing/BillingInvoices";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -197,12 +201,36 @@ function App() {
           <PrivateRoute element={<RegistrarLayout><RegistrarDashboard /></RegistrarLayout>} />
         }
       />
+      <Route
+        path="/registrar/enrollments"
+        element={
+          <PrivateRoute element={<RegistrarLayout><RegistrarEnrollments /></RegistrarLayout>} />
+        }
+      />
+      <Route
+        path="/registrar/transcripts"
+        element={
+          <PrivateRoute element={<RegistrarLayout><RegistrarTranscripts /></RegistrarLayout>} />
+        }
+      />
 
       {/* Billing Protected Routes */}
       <Route
         path="/billing/dashboard"
         element={
           <PrivateRoute element={<BillingLayout><BillingDashboard /></BillingLayout>} />
+        }
+      />
+      <Route
+        path="/billing/payments"
+        element={
+          <PrivateRoute element={<BillingLayout><BillingPayments /></BillingLayout>} />
+        }
+      />
+      <Route
+        path="/billing/invoices"
+        element={
+          <PrivateRoute element={<BillingLayout><BillingInvoices /></BillingLayout>} />
         }
       />
     </Routes>
