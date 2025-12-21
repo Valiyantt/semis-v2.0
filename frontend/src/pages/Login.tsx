@@ -25,6 +25,10 @@ const Login: React.FC = () => {
         navigate("/faculty/dashboard");
       } else if (userRole === "student") {
         navigate("/student/dashboard");
+      } else if (userRole === "registrar") {
+        navigate("/registrar/dashboard");
+      } else if (userRole === "billing") {
+        navigate("/billing/dashboard");
       } else {
         navigate("/superadmin/dashboard"); // Default fallback
       }
@@ -97,6 +101,8 @@ const Login: React.FC = () => {
             <p><span className="font-semibold">SuperAdmin:</span> admin / admin123</p>
             <p><span className="font-semibold">Faculty:</span> faculty01 / faculty123</p>
             <p><span className="font-semibold">Student:</span> student01 / student123</p>
+            <p><span className="font-semibold">Registrar:</span> registrar01 / registrar123</p>
+            <p><span className="font-semibold">Billing:</span> billing01 / billing123</p>
           </div>
         </div>
 

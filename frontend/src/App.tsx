@@ -11,6 +11,8 @@ import SuperAdminForm from './pages/superadmin/SuperAdminForm';
 import SuperAdminDetails from './pages/superadmin/SuperAdminDetails';
 import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
+import RegistrarDashboard from "./pages/registrar/RegistrarDashboard";
+import BillingDashboard from "./pages/billing/BillingDashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -64,6 +66,42 @@ const StudentLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="student" />
+
+      {/* Main layout */}
+      <div className="flex-1 flex flex-col">
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <main className="mt-16 md:ml-64 p-8 transition-all duration-300">{children}</main>
+      </div>
+    </div>
+  );
+};
+
+// Common layout wrapper for Registrar pages
+const RegistrarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="registrar" />
+
+      {/* Main layout */}
+      <div className="flex-1 flex flex-col">
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <main className="mt-16 md:ml-64 p-8 transition-all duration-300">{children}</main>
+      </div>
+    </div>
+  );
+};
+
+// Common layout wrapper for Billing pages
+const BillingLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50 font-[Corbel]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} role="billing" />
 
       {/* Main layout */}
       <div className="flex-1 flex flex-col">
@@ -149,6 +187,22 @@ function App() {
         path="/student/dashboard"
         element={
           <PrivateRoute element={<StudentLayout><StudentDashboard /></StudentLayout>} />
+        }
+      />
+
+      {/* Registrar Protected Routes */}
+      <Route
+        path="/registrar/dashboard"
+        element={
+          <PrivateRoute element={<RegistrarLayout><RegistrarDashboard /></RegistrarLayout>} />
+        }
+      />
+
+      {/* Billing Protected Routes */}
+      <Route
+        path="/billing/dashboard"
+        element={
+          <PrivateRoute element={<BillingLayout><BillingDashboard /></BillingLayout>} />
         }
       />
     </Routes>

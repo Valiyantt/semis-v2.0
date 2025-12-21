@@ -99,7 +99,9 @@ namespace backend.Data
                 var facultyRole = new AppRole { RoleName = "Faculty", Description = "Faculty member" };
                 var studentRole = new AppRole { RoleName = "Student", Description = "Student user" };
                 var adminRole = new AppRole { RoleName = "Admin", Description = "Administrative user" };
-                ctx.Roles.AddRange(superRole, facultyRole, studentRole, adminRole);
+                var registrarRole = new AppRole { RoleName = "Registrar", Description = "Handles student records and enrollment" };
+                var billingRole = new AppRole { RoleName = "Billing", Description = "Handles payment transactions and billing" };
+                ctx.Roles.AddRange(superRole, facultyRole, studentRole, adminRole, registrarRole, billingRole);
                 await ctx.SaveChangesAsync();
 
                 // Add three dummy users if none exist
@@ -138,7 +140,29 @@ namespace backend.Data
                         IsActive = true
                     };
 
-                    ctx.Users.AddRange(superAdmin, faculty, student);
+                    // Registrar Account
+                    var registrar = new AppUser
+                    {
+                        Username = "registrar01",
+                        FullName = "Maria Garcia",
+                        Email = "maria.garcia@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("registrar123"),
+                        RoleId = registrarRole.RoleId,
+                        IsActive = true
+                    };
+
+                    // Billing Account
+                    var billing = new AppUser
+                    {
+                        Username = "billing01",
+                        FullName = "Robert Chen",
+                        Email = "robert.chen@semis.edu",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("billing123"),
+                        RoleId = billingRole.RoleId,
+                        IsActive = true
+                    };
+
+                    ctx.Users.AddRange(superAdmin, faculty, student, registrar, billing);
                 }
             }
             else
@@ -149,6 +173,8 @@ namespace backend.Data
                     var superRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "SuperAdmin");
                     var facultyRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Faculty");
                     var studentRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Student");
+                    var registrarRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Registrar");
+                    var billingRole = ctx.Roles.FirstOrDefault(r => r.RoleName == "Billing");
 
                     if (superRole != null)
                     {
@@ -190,6 +216,34 @@ namespace backend.Data
                             IsActive = true
                         };
                         ctx.Users.Add(student);
+                    }
+
+                    if (registrarRole != null)
+                    {
+                        var registrar = new AppUser
+                        {
+                            Username = "registrar01",
+                            FullName = "Maria Garcia",
+                            Email = "maria.garcia@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("registrar123"),
+                            RoleId = registrarRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(registrar);
+                    }
+
+                    if (billingRole != null)
+                    {
+                        var billing = new AppUser
+                        {
+                            Username = "billing01",
+                            FullName = "Robert Chen",
+                            Email = "robert.chen@semis.edu",
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword("billing123"),
+                            RoleId = billingRole.RoleId,
+                            IsActive = true
+                        };
+                        ctx.Users.Add(billing);
                     }
                 }
             }
