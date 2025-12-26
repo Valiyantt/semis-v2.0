@@ -3,84 +3,251 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace backend.Controllers.SuperAdminArea
+namespace backend.Controllers
 {
-    [Route("backend/superadmin/[controller]")]
     [ApiController]
-    [Authorize(Roles = "SuperAdmin")]
-    public class UsersController : ControllerBase
+    [Route("backend/[controller]")]
+    public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context)
+        public UserController(AppDbContext context)
         {
             _context = context;
         }
 
-        // ✅ GET: api/superadmin/users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        // GET: backend/user/faculty - Get all faculty members
+        [HttpGet("faculty")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> GetAllFaculty()
         {
-            return await _context.Users
-                .Include(u => u.Role)
-                .OrderBy(u => u.FullName)
-                .ToListAsync();
+            try
+            {
+                var facultyRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Faculty");
+                if (facultyRole == null)
+                {
+                    return Ok(new List<object>());
+                }
+
+                var faculty = await _context.Users
+                    .Where(u => u.RoleId == facultyRole.RoleId)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.Username,
+                        u.FullName,
+                        u.Email,
+                        u.IsActive,
+                        u.DateCreated,
+                        Role = new { u.Role!.RoleName }
+                    })
+                    .ToListAsync();
+
+                return Ok(faculty);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error fetching faculty members", error = ex.Message });
+            }
         }
 
-        // ✅ GET: api/superadmin/users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        // GET: backend/user/faculty/:id - Get faculty member by ID
+        [HttpGet("faculty/{id}")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> GetFacultyById(int id)
         {
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            try
+            {
+                var faculty = await _context.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Id == id);
 
-            if (user == null) return NotFound();
-            return user;
+                if (faculty == null)
+                {
+                    return NotFound(new { message = "Faculty member not found" });
+                }
+
+                var result = new
+                {
+                    faculty.Id,
+                    faculty.Username,
+                    faculty.FullName,
+                    faculty.Email,
+                    faculty.IsActive,
+                    faculty.DateCreated,
+                    Role = new { faculty.Role!.RoleName }
+                };
+
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error fetching faculty member", error = ex.Message });
+            }
         }
 
-        // ✅ POST: api/superadmin/users
-        [HttpPost]
-        public async Task<ActionResult<AppUser>> CreateUser(AppUser user)
+        // POST: backend/user/faculty - Create new faculty member
+        [HttpPost("faculty")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> CreateFaculty([FromBody] CreateFacultyDto dto)
         {
-            if (await _context.Users.AnyAsync(u => u.Username == user.Username))
-                return BadRequest("Username already exists.");
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.FullName) || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
+                {
+                    return BadRequest(new { message = "Full name, email, and password are required" });
+                }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                // Check if user already exists
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+                if (existingUser != null)
+                {
+                    return Conflict(new { message = "User with this email already exists" });
+                }
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+                var facultyRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Faculty");
+                if (facultyRole == null)
+                {
+                    return BadRequest(new { message = "Faculty role not found" });
+                }
+
+                var username = string.IsNullOrWhiteSpace(dto.Username)
+                    ? dto.FullName.ToLower().Replace(" ", "")
+                    : dto.Username;
+
+                var faculty = new AppUser
+                {
+                    Username = username,
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    RoleId = facultyRole.RoleId,
+                    IsActive = true,
+                    DateCreated = System.DateTime.UtcNow
+                };
+
+                _context.Users.Add(faculty);
+                await _context.SaveChangesAsync();
+
+                var result = new
+                {
+                    faculty.Id,
+                    faculty.Username,
+                    faculty.FullName,
+                    faculty.Email,
+                    faculty.IsActive,
+                    faculty.DateCreated,
+                    Role = new { RoleName = "Faculty" }
+                };
+
+                return CreatedAtAction(nameof(GetFacultyById), new { id = faculty.Id }, result);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error creating faculty member", error = ex.Message });
+            }
         }
 
-        // ✅ PUT: api/superadmin/users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, AppUser user)
+        // PUT: backend/user/faculty/:id - Update faculty member
+        [HttpPut("faculty/{id}")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> UpdateFaculty(int id, [FromBody] UpdateFacultyDto dto)
         {
-            if (id != user.Id) return BadRequest();
+            try
+            {
+                var faculty = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+                if (faculty == null)
+                {
+                    return NotFound(new { message = "Faculty member not found" });
+                }
 
-            var existing = await _context.Users.FindAsync(id);
-            if (existing == null) return NotFound();
+                if (!string.IsNullOrWhiteSpace(dto.FullName))
+                {
+                    faculty.FullName = dto.FullName;
+                }
 
-            existing.FullName = user.FullName;
-            existing.Email = user.Email;
-            existing.RoleId = user.RoleId;
-            existing.IsActive = user.IsActive;
+                if (!string.IsNullOrWhiteSpace(dto.Email))
+                {
+                    // Check if email is already in use by another user
+                    var existingEmail = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Email == dto.Email && u.Id != id);
+                    if (existingEmail != null)
+                    {
+                        return Conflict(new { message = "Email is already in use" });
+                    }
+                    faculty.Email = dto.Email;
+                }
 
-            await _context.SaveChangesAsync();
-            return NoContent();
+                if (dto.IsActive.HasValue)
+                {
+                    faculty.IsActive = dto.IsActive.Value;
+                }
+
+                _context.Users.Update(faculty);
+                await _context.SaveChangesAsync();
+
+                var result = new
+                {
+                    faculty.Id,
+                    faculty.Username,
+                    faculty.FullName,
+                    faculty.Email,
+                    faculty.IsActive,
+                    faculty.DateCreated
+                };
+
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error updating faculty member", error = ex.Message });
+            }
         }
 
-        // ✅ DELETE: api/superadmin/users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        // DELETE: backend/user/faculty/:id - Remove faculty member
+        [HttpDelete("faculty/{id}")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> DeleteFaculty(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null) return NotFound();
+            try
+            {
+                var faculty = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+                if (faculty == null)
+                {
+                    return NotFound(new { message = "Faculty member not found" });
+                }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-            return NoContent();
+                _context.Users.Remove(faculty);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Faculty member removed successfully" });
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new { message = "Error removing faculty member", error = ex.Message });
+            }
         }
+    }
+
+    // DTOs
+    public class CreateFacultyDto
+    {
+        public string Username { get; set; } = "";
+        public string FullName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+        public int? SchoolLevelId { get; set; }
+    }
+
+    public class UpdateFacultyDto
+    {
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public bool? IsActive { get; set; }
+        public int? SchoolLevelId { get; set; }
     }
 }
