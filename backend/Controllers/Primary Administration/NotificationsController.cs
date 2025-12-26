@@ -180,6 +180,87 @@ namespace backend.Controllers
                 return StatusCode(500, new { message = "Internal server error" });
             }
         }
+
+        /// <summary>
+        /// Register device for push notifications
+        /// </summary>
+        [HttpPost("register-device")]
+        public async Task<IActionResult> RegisterDevice([FromBody] RegisterDeviceRequest request)
+        {
+            try
+            {
+                var username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+                if (user == null)
+                    return Unauthorized();
+
+                // Mock implementation - replace with actual DeviceToken model persistence
+                _logger.LogInformation($"Device registered for user {username}: {request.DeviceType}");
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Device registered for push notifications",
+                    deviceId = Guid.NewGuid().ToString()
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error registering device: {ex.Message}");
+                return StatusCode(500, new { message = "Internal server error" });
+            }
+        }
+
+        /// <summary>
+        /// Unregister device from push notifications
+        /// </summary>
+        [HttpPost("unregister-device")]
+        public async Task<IActionResult> UnregisterDevice([FromBody] UnregisterDeviceRequest request)
+        {
+            try
+            {
+                var username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+                if (user == null)
+                    return Unauthorized();
+
+                _logger.LogInformation($"Device unregistered for user {username}");
+
+                return Ok(new { message = "Device unregistered successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error unregistering device: {ex.Message}");
+                return StatusCode(500, new { message = "Internal server error" });
+            }
+        }
+
+        /// <summary>
+        /// Web Push API subscription (for advanced push notifications)
+        /// </summary>
+        [HttpPost("subscribe")]
+        public async Task<IActionResult> SubscribeToPushNotifications([FromBody] object subscription)
+        {
+            try
+            {
+                var username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+                if (user == null)
+                    return Unauthorized();
+
+                _logger.LogInformation($"Web Push subscription created for user {username}");
+
+                return Ok(new { message = "Subscription successful" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error subscribing to push notifications: {ex.Message}");
+                return StatusCode(500, new { message = "Internal server error" });
+            }
+        }
     }
 
     public class CreateNotificationRequest
@@ -188,5 +269,17 @@ namespace backend.Controllers
         public string Title { get; set; }
         public string Message { get; set; }
         public int[] UserIds { get; set; } // Recipients
+    }
+
+    public class RegisterDeviceRequest
+    {
+        public string Token { get; set; }
+        public string DeviceType { get; set; } // web, ios, android
+        public string DeviceName { get; set; }
+    }
+
+    public class UnregisterDeviceRequest
+    {
+        public string Token { get; set; }
     }
 }

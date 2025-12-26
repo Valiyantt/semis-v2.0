@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
@@ -23,6 +23,8 @@ import ChatBox from "./components/ChatBox";
 import DirectMessaging from "./components/DirectMessaging";
 import AIChatbot from "./components/AIChatbot";
 import NotificationCenter from "./components/NotificationCenter";
+import { pushNotificationService } from "./services/pushNotificationService";
+import { websocketService } from "./services/websocketService";
 
 // Protect private routes
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -125,6 +127,59 @@ function App() {
     // Default response - can be customized with actual backend integration
     return `Thank you for contacting support. We received your message: "${message}". A support agent will assist you shortly.`;
   };
+
+  // Initialize WebSocket and push notifications on app load
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("authenticated") === "true";
+    
+    if (isAuthenticated) {
+      // Initialize WebSocket connection
+      const token = localStorage.getItem("token") || "";
+      websocketService.initialize(token);
+
+      // Initialize push notifications
+      const initializePushNotifications = async () => {
+        // Check if push notifications are supported
+        if (pushNotificationService.isSupported()) {
+          // Request permission
+          const permission = await pushNotificationService.requestPermission();
+          
+          if (permission === "granted") {
+            // Register device for push notifications
+            try {
+              const deviceToken = `web-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+              await pushNotificationService.registerDevice(
+                deviceToken,
+                "web",
+                navigator.userAgent
+              );
+              
+              // Setup Web Push API if needed
+              if ("serviceWorker" in navigator) {
+                try {
+                  await navigator.serviceWorker.register("/sw.js");
+                } catch (error) {
+                  console.log("Service worker registration failed:", error);
+                }
+              }
+            } catch (error) {
+              console.error("Failed to register device for notifications:", error);
+            }
+          }
+        }
+      };
+
+      initializePushNotifications();
+    }
+
+    // Cleanup
+    return () => {
+      // Disconnect WebSocket on unmount or logout
+      if (!localStorage.getItem("authenticated")) {
+        // websocketService.disconnect(); // Uncomment when disconnect method is added
+      }
+    };
+  }, []);
 
   return (
     <>
