@@ -19,6 +19,10 @@ import BillingPayments from "./pages/billing/BillingPayments";
 import BillingInvoices from "./pages/billing/BillingInvoices";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import ChatBox from "./components/ChatBox";
+import DirectMessaging from "./components/DirectMessaging";
+import AIChatbot from "./components/AIChatbot";
+import NotificationCenter from "./components/NotificationCenter";
 
 // Protect private routes
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -117,8 +121,14 @@ const BillingLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 };
 
 function App() {
+  const handleChatMessage = async (message: string): Promise<string> => {
+    // Default response - can be customized with actual backend integration
+    return `Thank you for contacting support. We received your message: "${message}". A support agent will assist you shortly.`;
+  };
+
   return (
-    <Routes>
+    <>
+      <Routes>
       {/* Public route */}
       <Route path="/" element={<Login />} />
 
@@ -234,6 +244,11 @@ function App() {
         }
       />
     </Routes>
+    <ChatBox title="SEMIS Support" onSendMessage={handleChatMessage} />
+    <DirectMessaging currentUsername="student_user" />
+    <AIChatbot />
+    <NotificationCenter />
+    </>
   );
 }
 
