@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { studentManagementService } from "../services/studentManagementService";
+import { studentManagementService } from "../../services/studentManagementService";
 
 const StudentRegistration: React.FC = () => {
   const navigate = useNavigate();
