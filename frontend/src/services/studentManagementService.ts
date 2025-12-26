@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:5157/backend";
+import api from './api';
 
 export interface Student {
   id: number;
@@ -53,7 +51,7 @@ export const studentManagementService = {
   // Get all students (for SuperAdmin)
   getAllStudents: async (): Promise<Student[]> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Student/all`);
+      const response = await api.get('Student/all');
       return response.data;
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -64,7 +62,7 @@ export const studentManagementService = {
   // Get enrolled students (for SuperAdmin)
   getEnrolledStudents: async (): Promise<Student[]> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Student/enrolled`);
+      const response = await api.get('Student/enrolled');
       return response.data;
     } catch (error) {
       console.error("Error fetching enrolled students:", error);
@@ -75,7 +73,7 @@ export const studentManagementService = {
   // Get pending/not enrolled students (for SuperAdmin)
   getPendingStudents: async (): Promise<Student[]> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Student/pending`);
+      const response = await api.get('Student/pending');
       return response.data;
     } catch (error) {
       console.error("Error fetching pending students:", error);
@@ -86,7 +84,7 @@ export const studentManagementService = {
   // Register new student
   registerStudent: async (payload: StudentRegistrationPayload): Promise<StudentLoginResponse> => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/Auth/register-student`, payload);
+      const response = await api.post('auth/register-student', payload);
       return response.data;
     } catch (error) {
       console.error("Error registering student:", error);
@@ -97,7 +95,7 @@ export const studentManagementService = {
   // Student login
   loginStudent: async (payload: StudentLoginPayload): Promise<StudentLoginResponse> => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/Auth/login-student`, payload);
+      const response = await api.post('auth/login-student', payload);
       return response.data;
     } catch (error) {
       console.error("Error logging in:", error);
@@ -108,7 +106,7 @@ export const studentManagementService = {
   // Get student details
   getStudentDetails: async (id: number): Promise<Student> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Student/${id}`);
+      const response = await api.get(`Student/${id}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching student details:", error);
@@ -122,7 +120,7 @@ export const studentManagementService = {
     payload: StudentPersonalInfo
   ): Promise<Student> => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/Student/${id}/personal-info`, payload);
+      const response = await api.put(`Student/${id}/personal-info`, payload);
       return response.data;
     } catch (error) {
       console.error("Error updating personal info:", error);
@@ -133,7 +131,7 @@ export const studentManagementService = {
   // Approve student enrollment (SuperAdmin)
   approveEnrollment: async (id: number): Promise<Student> => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/Student/${id}/approve`);
+      const response = await api.post(`Student/${id}/approve`);
       return response.data;
     } catch (error) {
       console.error("Error approving enrollment:", error);
@@ -144,7 +142,7 @@ export const studentManagementService = {
   // Reject student enrollment (SuperAdmin)
   rejectEnrollment: async (id: number): Promise<void> => {
     try {
-      await axios.post(`${API_BASE_URL}/Student/${id}/reject`);
+      await api.post(`Student/${id}/reject`);
     } catch (error) {
       console.error("Error rejecting enrollment:", error);
       throw error;
@@ -156,7 +154,7 @@ export const studentDashboardService = {
   // Get student dashboard data
   getDashboard: async (): Promise<any> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard`);
+      const response = await api.get('StudentDashboard');
       return response.data;
     } catch (error) {
       console.error("Error fetching dashboard:", error);
@@ -167,7 +165,7 @@ export const studentDashboardService = {
   // Get student grades
   getGrades: async (): Promise<any> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/grades`);
+      const response = await api.get('StudentDashboard/grades');
       return response.data;
     } catch (error) {
       console.error("Error fetching grades:", error);
@@ -178,7 +176,7 @@ export const studentDashboardService = {
   // Get student schedule
   getSchedule: async (): Promise<any> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/schedule`);
+      const response = await api.get('StudentDashboard/schedule');
       return response.data;
     } catch (error) {
       console.error("Error fetching schedule:", error);

@@ -4,7 +4,7 @@ export type LoginPayload = { username: string; password: string };
 export type LoginResponse = { token: string; user: { id: string; username: string; role: string } };
 
 export async function login(payload: LoginPayload): Promise<LoginResponse> {
-  const res = await api.post<LoginResponse>('/backend/auth/login', payload);
+  const res = await api.post<LoginResponse>('auth/login', payload);
   const { token, user } = res.data;
   
   if (token) {

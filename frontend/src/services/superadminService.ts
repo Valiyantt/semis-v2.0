@@ -7,7 +7,7 @@ export type SuperAdmin = {
   passwordHash?: string;
 };
 
-const basePath = '/backend/SuperAdmin';
+const basePath = 'SuperAdmin';
 
 export async function getAll() {
   const res = await api.get<SuperAdmin[]>(basePath);

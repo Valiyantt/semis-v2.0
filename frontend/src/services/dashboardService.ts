@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:5157/backend";
+import api from './api';
 
 export const superadminDashboardService = {
   getDashboard: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard`);
+      const response = await api.get('Dashboard');
       return response.data;
     } catch (error) {
       console.error("Error fetching superadmin dashboard:", error);
@@ -15,7 +13,7 @@ export const superadminDashboardService = {
 
   getUsersStats: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/users`);
+      const response = await api.get('Dashboard/users');
       return response.data;
     } catch (error) {
       console.error("Error fetching users statistics:", error);
@@ -25,7 +23,7 @@ export const superadminDashboardService = {
 
   getFacultyStats: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/faculty`);
+      const response = await api.get('Dashboard/faculty');
       return response.data;
     } catch (error) {
       console.error("Error fetching faculty statistics:", error);
@@ -35,7 +33,7 @@ export const superadminDashboardService = {
 
   getStudentStats: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/students`);
+      const response = await api.get('Dashboard/students');
       return response.data;
     } catch (error) {
       console.error("Error fetching student statistics:", error);
@@ -45,7 +43,7 @@ export const superadminDashboardService = {
 
   getDepartmentsStats: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/departments`);
+      const response = await api.get('Dashboard/departments');
       return response.data;
     } catch (error) {
       console.error("Error fetching departments:", error);
@@ -55,7 +53,7 @@ export const superadminDashboardService = {
 
   getAuditLogs: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/audit-logs`);
+      const response = await api.get('Dashboard/audit-logs');
       return response.data;
     } catch (error) {
       console.error("Error fetching audit logs:", error);
@@ -65,7 +63,7 @@ export const superadminDashboardService = {
 
   getRevenueReport: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/Dashboard/revenue`);
+      const response = await api.get('Dashboard/revenue');
       return response.data;
     } catch (error) {
       console.error("Error fetching revenue report:", error);

@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:5157/backend";
+import api from './api';
 
 export const schoolStructureService = {
   getSchoolLevels: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/SchoolStructure/levels`);
+      const response = await api.get('SchoolStructure/levels');
       return response.data;
     } catch (error) {
       console.error("Error fetching school levels:", error);
@@ -15,7 +13,7 @@ export const schoolStructureService = {
 
   getGradesByLevel: async (levelId: number) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/SchoolStructure/grades/${levelId}`);
+      const response = await api.get(`SchoolStructure/grades/${levelId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching grades:", error);
@@ -25,7 +23,7 @@ export const schoolStructureService = {
 
   getCompleteStructure: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/SchoolStructure/all`);
+      const response = await api.get('SchoolStructure/all');
       return response.data;
     } catch (error) {
       console.error("Error fetching school structure:", error);

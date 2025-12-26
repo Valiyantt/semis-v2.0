@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:5157/backend";
+import api from './api';
 
 export const facultyDashboardService = {
   getDashboard: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/FacultyDashboard`);
+      const response = await api.get('FacultyDashboard');
       return response.data;
     } catch (error) {
       console.error("Error fetching faculty dashboard:", error);
@@ -15,7 +13,7 @@ export const facultyDashboardService = {
 
   getClasses: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/FacultyDashboard/classes`);
+      const response = await api.get('FacultyDashboard/classes');
       return response.data;
     } catch (error) {
       console.error("Error fetching faculty classes:", error);
@@ -25,7 +23,7 @@ export const facultyDashboardService = {
 
   getAssignments: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/FacultyDashboard/assignments`);
+      const response = await api.get('FacultyDashboard/assignments');
       return response.data;
     } catch (error) {
       console.error("Error fetching faculty assignments:", error);
@@ -35,7 +33,7 @@ export const facultyDashboardService = {
 
   getPerformance: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/FacultyDashboard/performance`);
+      const response = await api.get('FacultyDashboard/performance');
       return response.data;
     } catch (error) {
       console.error("Error fetching faculty performance:", error);

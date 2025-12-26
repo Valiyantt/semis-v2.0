@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:5157/backend";
+import api from './api';
 
 export const studentDashboardService = {
   getDashboard: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard`);
+      const response = await api.get('StudentDashboard');
       return response.data;
     } catch (error) {
       console.error("Error fetching student dashboard:", error);
@@ -15,7 +13,7 @@ export const studentDashboardService = {
 
   getCourses: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/courses`);
+      const response = await api.get('StudentDashboard/courses');
       return response.data;
     } catch (error) {
       console.error("Error fetching student courses:", error);
@@ -25,7 +23,7 @@ export const studentDashboardService = {
 
   getAssignments: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/assignments`);
+      const response = await api.get('StudentDashboard/assignments');
       return response.data;
     } catch (error) {
       console.error("Error fetching student assignments:", error);
@@ -35,7 +33,7 @@ export const studentDashboardService = {
 
   getGrades: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/grades`);
+      const response = await api.get('StudentDashboard/grades');
       return response.data;
     } catch (error) {
       console.error("Error fetching student grades:", error);
@@ -45,7 +43,7 @@ export const studentDashboardService = {
 
   getSchedule: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/StudentDashboard/schedule`);
+      const response = await api.get('StudentDashboard/schedule');
       return response.data;
     } catch (error) {
       console.error("Error fetching student schedule:", error);
